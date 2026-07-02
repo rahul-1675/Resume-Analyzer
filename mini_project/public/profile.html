@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELEVYA - Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar section-content">
+            <a href="#" class="nav-logo"><h1 class="fas fa-envelope"> ELEVYA</h1></a>
+            <ul class="nav-option">
+                <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link active">Profile</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="profile-main">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="user-info">
+                    <div class="avatar">
+                        <i class="fas fa-user-circle" id="defaultAvatar"></i>
+                        <img id="profileImage" style="display: none;" alt="Profile Picture">
+                    </div>
+                    <div class="user-details">
+                        <h1 class="user-name">Loading...</h1>
+                        <p class="user-email">Loading...</p>
+                        <p class="member-since">Member since: Loading...</p>
+                        <div class="user-stats">
+                            <span class="stat-item"><i class="fas fa-calendar"></i> <span id="userAge">Loading...</span> years</span>
+                            <span class="stat-item"><i class="fas fa-map-marker-alt"></i> <span id="userLocation">Loading...</span></span>
+                        </div>
+                    </div>
+                </div>
+                <button class="edit-profile-btn" onclick="editProfile()">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+            </div>
+            
+            <div class="dashboard-grid">
+                <!-- Profile Details Section -->
+                <div class="dashboard-card profile-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-user"></i> Profile Details</h2>
+                        <button class="card-action-btn" onclick="editProfile()">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                    </div>
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <strong>Full Name:</strong> <span id="profile-fullName">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Email:</strong> <span id="profile-email">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Phone:</strong> <span id="profile-phone">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Gender:</strong> <span id="profile-gender">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Date of Birth:</strong> <span id="profile-dob">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Address:</strong> <span id="profile-address">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>LinkedIn:</strong> <span id="profile-linkedin">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Portfolio:</strong> <span id="profile-portfolio">Loading...</span>
+                        </div>
+                    </div>
+                    <p class="card-description">
+                        Your personal information used for resume generation.
+                    </p>
+                </div>
+                
+                <!-- ATS Score Section -->
+                <div class="dashboard-card ats-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-line"></i> ATS Score</h2>
+                        <button class="card-action-btn" onclick="refreshATS()">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="ats-score">
+                        <div class="score-circle">
+                            <div class="score-number" id="ats-score-number">78</div>
+                            <div class="score-label">ATS Score</div>
+                        </div>
+                        <div class="score-status good">
+                            <i class="fas fa-check-circle"></i> Good Score
+                        </div>
+                    </div>
+                    <div class="ats-breakdown">
+                        <div class="breakdown-item">
+                            <span>Keywords Match</span>
+                            <div class="progress-bar">
+                                <div class="progress" id="keywords-progress" style="width: 75%"></div>
+                            </div>
+                            <span id="keywords-percent">75%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Format Quality</span>
+                            <div class="progress-bar">
+                                <div class="progress" id="format-progress" style="width: 85%"></div>
+                            </div>
+                            <span id="format-percent">85%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Completeness</span>
+                            <div class="progress-bar">
+                                <div class="progress" id="completeness-progress" style="width: 70%"></div>
+                            </div>
+                            <span id="completeness-percent">70%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Education Score</span>
+                            <div class="progress-bar">
+                                <div class="progress" id="education-progress" style="width: 80%"></div>
+                            </div>
+                            <span id="education-percent">80%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Skills Score</span>
+                            <div class="progress-bar">
+                                <div class="progress" id="skills-progress" style="width: 85%"></div>
+                            </div>
+                            <span id="skills-percent">85%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resume Section with Template Selection -->
+                <div class="dashboard-card resume-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-file-alt"></i> Your Resume</h2>
+                        <div class="card-actions">
+                            <select id="templateSelect" class="template-selector">
+                                <option value="professional">Professional</option>
+                                <option value="modern">Modern</option>
+                                <option value="creative">Creative</option>
+                                <option value="minimal">Minimal</option>
+                                <option value="executive">Executive</option>
+                            </select>
+                            <button class="card-action-btn" onclick="generateResume()">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="resume-preview">
+                        <div class="resume-thumbnail">
+                            <i class="fas fa-file-pdf"></i>
+                            <p id="resume-filename">No resume generated yet</p>
+                            <small id="template-info" class="template-info">Template: Professional</small>
+                        </div>
+                        <div class="resume-actions">
+                            <button class="action-btn primary" id="view-btn" onclick="viewResume()" disabled>
+                                <i class="fas fa-eye"></i> View Resume
+                            </button>
+                            <button class="action-btn secondary" onclick="editProfile()">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </button>
+                            <button class="action-btn success" id="download-btn" onclick="downloadResume()" disabled>
+                                <i class="fas fa-download"></i> Download PDF
+                            </button>
+                        </div>
+                        <div class="resume-actions" style="margin-top: 15px;">
+                            <button class="action-btn" id="generate-btn" onclick="generateResume()" 
+                                    style="background: #28a745; color: white; width: 100%;"><img src="C:\Users\Sindhuja\Downloads\Copy of White and Blue Lines Minimalist Professional CV Resume.jpg">
+                                <i class="fas fa-magic"></i> Generate Resume
+                            </button>
+                        </div>
+                    </div>
+                    <p class="last-updated" id="resume-last-updated">Generate your first resume to get started</p>
+                </div>
+
+                <!-- Education Summary Card -->
+                <div class="dashboard-card education-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-graduation-cap"></i> Education Summary</h2>
+                    </div>
+                    <div class="education-summary">
+                        <div class="education-item" id="bachelor-info">
+                            <h4>Bachelor's Degree</h4>
+                            <p id="bachelor-details">Not specified</p>
+                        </div>
+                        <div class="education-item" id="master-info" style="display: none;">
+                            <h4>Master's Degree</h4>
+                            <p id="master-details">Not specified</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>12th Standard</h4>
+                            <p id="twelfth-details">Not specified</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>10th Standard</h4>
+                            <p id="tenth-details">Not specified</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Overview Card -->
+                <div class="dashboard-card skills-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-code"></i> Skills Overview</h2>
+                    </div>
+                    <div class="skills-overview">
+                        <div class="skills-section">
+                            <h4>Technical Skills</h4>
+                            <div class="skills-tags" id="technical-skills-tags">
+                                <span class="skill-tag">Not specified</span>
+                            </div>
+                        </div>
+                        <div class="skills-section">
+                            <h4>Soft Skills</h4>
+                            <div class="skills-tags" id="soft-skills-tags">
+                                <span class="skill-tag">Not specified</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Improvement Suggestions -->
+                <div class="dashboard-card suggestions-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-lightbulb"></i> Profile Improvements</h2>
+                    </div>
+                    <div class="suggestions-list" id="suggestions-list">
+                        <!-- Dynamic suggestions will be populated here -->
+                    </div>
+                    <button class="view-all-btn" onclick="editProfile()">Edit Profile to Improve</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #411e02; margin-bottom: 15px;"></i>
+            <h3 style="color: #411e02; margin-bottom: 10px;" id="loadingTitle">Processing...</h3>
+            <p style="color: #666;" id="loadingMessage">Please wait while we process your request.</p>
+        </div>
+    </div>
+    
+    <script>
+        let currentProfile = null;
+        let currentUserId = null;
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userId = sessionStorage.getItem('userId');
+            
+            if (!userId) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            currentUserId = parseInt(userId);
+            await loadProfile(currentUserId);
+            
+            // Template selector change event
+            document.getElementById('templateSelect').addEventListener('change', function() {
+                const selectedTemplate = this.value;
+                document.getElementById('template-info').textContent = `Template: ${selectedTemplate.charAt(0).toUpperCase() + selectedTemplate.slice(1)}`;
+            });
+        });
+
+        async function loadProfile(userId) {
+            try {
+                showLoading('Loading Profile', 'Fetching your profile information...');
+                
+                const response = await fetch(`/api/profile/${userId}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentProfile = result.profile;
+                    populateProfile(result.profile);
+                } else {
+                    throw new Error(result.message);
+                }
+                
+            } catch (error) {
+                console.error('Profile fetch error:', error);
+                alert('Failed to load profile. Please try logging in again.');
+                sessionStorage.clear();
+                window.location.href = 'login.html';
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function populateProfile(profile) {
+            // Update header information with profile image
+            document.querySelector('.user-name').textContent = profile.fullName || 'No name provided';
+            document.querySelector('.user-email').textContent = profile.email || 'No email provided';
+            document.querySelector('.member-since').textContent = `Member since: ${formatDate(profile.registrationDate)}`;
+            
+            // Handle profile image
+            if (profile.profileImage) {
+                document.getElementById('profileImage').src = profile.profileImage;
+                document.getElementById('profileImage').style.display = 'block';
+                document.getElementById('defaultAvatar').style.display = 'none';
+            }
+            
+            // Calculate and display age
+            if (profile.dateOfBirth) {
+                const age = calculateAge(profile.dateOfBirth);
+                document.getElementById('userAge').textContent = age;
+            }
+            
+            // Display location info
+            if (profile.nationality || profile.address) {
+                const location = [profile.nationality, profile.address].filter(Boolean).join(', ');
+                document.getElementById('userLocation').textContent = location || 'Not specified';
+            }
+            
+            // Update profile details
+            document.getElementById('profile-fullName').textContent = profile.fullName || 'Not provided';
+            document.getElementById('profile-email').textContent = profile.email || 'Not provided';
+            document.getElementById('profile-phone').textContent = profile.phoneNumber || 'Not provided';
+            document.getElementById('profile-gender').textContent = formatGender(profile.gender) || 'Not provided';
+            document.getElementById('profile-dob').textContent = formatDate(profile.dateOfBirth) || 'Not provided';
+            document.getElementById('profile-address').textContent = profile.address || 'Not provided';
+            
+            // Handle LinkedIn and Portfolio links
+            handleProfileLink('profile-linkedin', profile.linkedinProfile);
+            handleProfileLink('profile-portfolio', profile.portfolioGithub);
+            
+            // Populate education summary
+            populateEducationSummary(profile);
+            
+            // Populate skills overview
+            populateSkillsOverview(profile);
+            
+            // Update ATS score if available
+            updateATSScore(profile.atsScore);
+            
+            // Update resume information
+            updateResumeSection(profile.resumeInfo);
+            
+            // Generate improvement suggestions
+            generateImprovementSuggestions(profile);
+        }
+
+        function handleProfileLink(elementId, url) {
+            const element = document.getElementById(elementId);
+            if (url) {
+                element.innerHTML = `<a href="${url}" target="_blank" style="color: #0077b5; text-decoration: none;">${url}</a>`;
+            } else {
+                element.textContent = 'Not provided';
+            }
+        }
+
+        function populateEducationSummary(profile) {
+            if (profile.bachelor_degree) {
+                const bachelorInfo = [
+                    profile.bachelor_degree,
+                    profile.bachelor_college,
+                    profile.bachelor_year,
+                    profile.bachelor_cgpa ? `CGPA: ${profile.bachelor_cgpa}` : null
+                ].filter(Boolean).join(' | ');
+                document.getElementById('bachelor-details').textContent = bachelorInfo;
+            }
+
+            if (profile.master_degree) {
+                const masterInfo = [
+                    profile.master_degree,
+                    profile.master_college,
+                    profile.master_year,
+                    profile.master_cgpa ? `CGPA: ${profile.master_cgpa}` : null
+                ].filter(Boolean).join(' | ');
+                document.getElementById('master-details').textContent = masterInfo;
+                document.getElementById('master-info').style.display = 'block';
+            }
+
+            if (profile.twelfth_board) {
+                const twelfthInfo = [
+                    profile.twelfth_stream,
+                    profile.twelfth_board,
+                    profile.twelfth_year,
+                    profile.twelfth_percentage ? `${profile.twelfth_percentage}%` : null
+                ].filter(Boolean).join(' | ');
+                document.getElementById('twelfth-details').textContent = twelfthInfo;
+            }
+
+            if (profile.tenth_board) {
+                const tenthInfo = [
+                    profile.tenth_board,
+                    profile.tenth_year,
+                    profile.tenth_percentage ? `${profile.tenth_percentage}%` : null
+                ].filter(Boolean).join(' | ');
+                document.getElementById('tenth-details').textContent = tenthInfo;
+            }
+        }
+
+        function populateSkillsOverview(profile) {
+            const technicalSkillsContainer = document.getElementById('technical-skills-tags');
+            if (profile.technical_skills) {
+                const skills = profile.technical_skills.split('\n')
+                    .map(skill => skill.replace(/^[•\-]\s*/, '').trim())
+                    .filter(Boolean)
+                    .slice(0, 10);
+                
+                if (skills.length > 0) {
+                    technicalSkillsContainer.innerHTML = skills
+                        .map(skill => `<span class="skill-tag">${skill}</span>`)
+                        .join('');
+                }
+            }
+
+            const softSkillsContainer = document.getElementById('soft-skills-tags');
+            if (profile.soft_skills) {
+                const skills = profile.soft_skills.split('\n')
+                    .map(skill => skill.replace(/^[•\-]\s*/, '').trim())
+                    .filter(Boolean)
+                    .slice(0, 8);
+                
+                if (skills.length > 0) {
+                    softSkillsContainer.innerHTML = skills
+                        .map(skill => `<span class="skill-tag soft-skill">${skill}</span>`)
+                        .join('');
+                }
+            }
+        }
+
+        function generateImprovementSuggestions(profile) {
+            const suggestions = [];
+            
+            if (!profile.profileImage) {
+                suggestions.push({
+                    priority: 'medium',
+                    title: 'Add Professional Photo',
+                    description: 'Upload a professional headshot to make your profile more personal.'
+                });
+            }
+
+            if (!profile.technical_skills || profile.technical_skills.trim().length < 50) {
+                suggestions.push({
+                    priority: 'high',
+                    title: 'Expand Technical Skills',
+                    description: 'Add more technical skills relevant to your target roles.'
+                });
+            }
+
+            if (!profile.workExperience || profile.workExperience.trim().length < 100) {
+                suggestions.push({
+                    priority: 'high',
+                    title: 'Add Work Experience',
+                    description: 'Include detailed work experience with achievements.'
+                });
+            }
+
+            if (!profile.projects || profile.projects.trim().length < 100) {
+                suggestions.push({
+                    priority: 'medium',
+                    title: 'Showcase Projects',
+                    description: 'Add projects to demonstrate your practical skills.'
+                });
+            }
+
+            if (!profile.certifications || profile.certifications.trim().length < 50) {
+                suggestions.push({
+                    priority: 'medium',
+                    title: 'Add Certifications',
+                    description: 'Include relevant certifications to boost credibility.'
+                });
+            }
+
+            const suggestionsContainer = document.getElementById('suggestions-list');
+            
+            if (suggestions.length === 0) {
+                suggestionsContainer.innerHTML = `
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon excellent">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="suggestion-content">
+                            <h4>Profile Complete!</h4>
+                            <p>Your profile looks comprehensive. Keep updating it as you gain more experience.</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                suggestionsContainer.innerHTML = suggestions.map(suggestion => `
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon ${suggestion.priority}">
+                            <i class="fas ${suggestion.priority === 'high' ? 'fa-exclamation' : suggestion.priority === 'medium' ? 'fa-info' : 'fa-check'}"></i>
+                        </div>
+                        <div class="suggestion-content">
+                            <h4>${suggestion.title}</h4>
+                            <p>${suggestion.description}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function updateATSScore(atsScore) {
+            if (atsScore) {
+                document.getElementById('ats-score-number').textContent = atsScore.score;
+                document.getElementById('keywords-progress').style.width = atsScore.keywordsMatch + '%';
+                document.getElementById('format-progress').style.width = atsScore.formatQuality + '%';
+                document.getElementById('completeness-progress').style.width = atsScore.completeness + '%';
+                document.getElementById('education-progress').style.width = atsScore.educationScore + '%';
+                document.getElementById('skills-progress').style.width = atsScore.skillsScore + '%';
+                
+                document.getElementById('keywords-percent').textContent = atsScore.keywordsMatch + '%';
+                document.getElementById('format-percent').textContent = atsScore.formatQuality + '%';
+                document.getElementById('completeness-percent').textContent = atsScore.completeness + '%';
+                document.getElementById('education-percent').textContent = atsScore.educationScore + '%';
+                document.getElementById('skills-percent').textContent = atsScore.skillsScore + '%';
+                
+                const scoreStatus = document.querySelector('.score-status');
+                const score = atsScore.score;
+                if (score >= 80) {
+                    scoreStatus.className = 'score-status excellent';
+                    scoreStatus.innerHTML = '<i class="fas fa-star"></i> Excellent Score';
+                } else if (score >= 70) {
+                    scoreStatus.className = 'score-status good';
+                    scoreStatus.innerHTML = '<i class="fas fa-check-circle"></i> Good Score';
+                } else if (score >= 50) {
+                    scoreStatus.className = 'score-status average';
+                    scoreStatus.innerHTML = '<i class="fas fa-info-circle"></i> Average Score';
+                } else {
+                    scoreStatus.className = 'score-status poor';
+                    scoreStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Needs Improvement';
+                }
+            }
+        }
+
+        function updateResumeSection(resumeInfo) {
+            const filenameElement = document.getElementById('resume-filename');
+            const lastUpdatedElement = document.getElementById('resume-last-updated');
+            const viewBtn = document.getElementById('view-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            if (resumeInfo && resumeInfo.filename) {
+                filenameElement.textContent = resumeInfo.filename;
+                lastUpdatedElement.textContent = `Last updated: ${formatDate(resumeInfo.generatedDate)}`;
+                
+                viewBtn.disabled = false;
+                downloadBtn.disabled = false;
+                viewBtn.style.opacity = '1';
+                downloadBtn.style.opacity = '1';
+                viewBtn.style.cursor = 'pointer';
+                downloadBtn.style.cursor = 'pointer';
+                
+                if (resumeInfo.template) {
+                    document.getElementById('template-info').textContent = `Template: ${resumeInfo.template.charAt(0).toUpperCase() + resumeInfo.template.slice(1)}`;
+                    document.getElementById('templateSelect').value = resumeInfo.template;
+                }
+                
+                if (resumeInfo.fileSize) {
+                    const fileSizeKB = Math.round(resumeInfo.fileSize / 1024);
+                    lastUpdatedElement.textContent += ` (${fileSizeKB} KB)`;
+                }
+            } else {
+                filenameElement.textContent = 'No resume generated yet';
+                lastUpdatedElement.textContent = 'Generate your first resume to get started';
+                
+                viewBtn.disabled = true;
+                downloadBtn.disabled = true;
+                viewBtn.style.opacity = '0.6';
+                downloadBtn.style.opacity = '0.6';
+                viewBtn.style.cursor = 'not-allowed';
+                downloadBtn.style.cursor = 'not-allowed';
+            }
+        }
+
+        async function generateResume() {
+            if (!currentUserId) {
+                alert('Please refresh the page and try again.');
+                return;
+            }
+
+            const selectedTemplate = document.getElementById('templateSelect').value;
+
+            try {
+                showLoading('Generating Resume', `Creating your professional resume with ${selectedTemplate} template...`);
+                
+                const response = await fetch(`/api/generate-resume/${currentUserId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ template: selectedTemplate })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    updateResumeSection({
+                        filename: result.resume.filename,
+                        generatedDate: result.resume.generatedDate,
+                        fileSize: result.resume.fileSize,
+                        template: selectedTemplate
+                    });
+                    
+                    if (result.atsScore) {
+                        updateATSScore(result.atsScore);
+                    }
+                    
+                    alert(`Resume generated successfully with ${selectedTemplate} template!`);
+                } else {
+                    throw new Error(result.message || 'Failed to generate resume');
+                }
+
+            } catch (error) {
+                console.error('Resume generation error:', error);
+                alert('Failed to generate resume: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function viewResume() {
+            if (!currentUserId) {
+                alert('Please refresh the page and try again.');
+                return;
+            }
+
+            if (document.getElementById('view-btn').disabled) {
+                alert('Please generate a resume first.');
+                return;
+            }
+
+            try {
+                const viewUrl = `/api/view-resume/${currentUserId}`;
+                const newWindow = window.open(viewUrl, '_blank');
+                
+                if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                    alert('Popup blocked. Please allow popups for this site and try again.');
+                }
+                
+            } catch (error) {
+                console.error('Resume view error:', error);
+                alert('Failed to view resume: ' + error.message);
+            }
+        }
+
+        async function downloadResume() {
+            if (!currentUserId) {
+                alert('Please refresh the page and try again.');
+                return;
+            }
+
+            if (document.getElementById('download-btn').disabled) {
+                alert('Please generate a resume first.');
+                return;
+            }
+
+            try {
+                showLoading('Downloading Resume', 'Preparing your resume for download...');
+                
+                const downloadUrl = `/api/download-resume/${currentUserId}`;
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = '';
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                setTimeout(() => {
+                    alert('Resume download started! Check your downloads folder.');
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Resume download error:', error);
+                alert('Failed to download resume: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function refreshATS() {
+            if (!currentUserId) {
+                alert('Please refresh the page and try again.');
+                return;
+            }
+
+            try {
+                showLoading('Refreshing ATS Score', 'Recalculating your ATS score...');
+                
+                const response = await fetch(`/api/refresh-ats/${currentUserId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    updateATSScore(result.atsScore);
+                    alert('ATS score refreshed successfully!');
+                } else {
+                    throw new Error(result.message);
+                }
+
+            } catch (error) {
+                console.error('ATS refresh error:', error);
+                alert('Failed to refresh ATS score: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Utility functions
+        function calculateAge(dateOfBirth) {
+            if (!dateOfBirth) return 'N/A';
+            const today = new Date();
+            const birthDate = new Date(dateOfBirth);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+
+        function formatGender(gender) {
+            if (!gender) return null;
+            const genderMap = {
+                'male': 'Male',
+                'female': 'Female',
+                'prefer-not-to-say': 'Prefer not to say'
+            };
+            return genderMap[gender] || gender;
+        }
+
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long',
+                    day: 'numeric'
+                });
+            } catch (error) {
+                return dateString || 'Unknown date';
+            }
+        }
+
+        function showLoading(title, message) {
+            document.getElementById('loadingTitle').textContent = title;
+            document.getElementById('loadingMessage').textContent = message;
+            document.getElementById('loadingModal').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingModal').style.display = 'none';
+        }
+
+        function editProfile() {
+            window.location.href = 'edit_profile.html';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.clear();
+                window.location.href = 'home.html';
+            }
+        }
+
+        // Event handlers
+        window.addEventListener('beforeunload', function(e) {
+            if (document.getElementById('loadingModal').style.display === 'flex') {
+                e.preventDefault();
+                e.returnValue = 'An operation is in progress. Are you sure you want to leave?';
+            }
+        });
+
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript error:', e.error);
+            hideLoading();
+        });
+    </script>
+</body>
+</html>

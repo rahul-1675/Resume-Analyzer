@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ELEVYA - Create Account</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar section-content">
+      <a href="#" class="nav-logo"><h1 class="fas fa-envelope"> ELEVYA</h1></a>
+      <ul class="nav-option">
+        <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="login.html" class="nav-link">Login</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="resume-container">
+    <div class="resume-header">
+      <h1 class="resume-title">Create Your Account</h1>
+      <p class="switch-login">Already have an account? <a href="login.html" class="registration-link">Login</a></p>
+    </div>
+    <form class="resume-form">
+      <h2>Personal Details</h2>
+      
+      <!-- Profile Image Upload Section -->
+      <div class="profile-image-section">
+        <h3>Profile Picture</h3>
+        <div class="profile-image-upload">
+          <div class="image-preview" id="imagePreview">
+            <i class="fas fa-user-circle" id="defaultIcon"></i>
+            <img id="previewImg" style="display: none;" alt="Profile Preview">
+          </div>
+          <div class="upload-controls">
+            <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+            <button type="button" class="career-btn" id="uploadImageBtn">
+              <i class="fas fa-camera"></i>Upload Photo
+            </button>
+            <button type="button" class="career-btn" id="removeImageBtn" style="display: none; background: #dc3545;">
+              <i class="fas fa-trash"></i>Remove
+            </button>
+          </div>
+          <small class="form-help">Upload a professional photo (max 5MB, JPG/PNG)</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="text" class="form-input" name="fullName" placeholder="Full Name * (e.g. Ramesh Kumar Desai)" required>
+        <span class="error-message">Please enter your full name (minimum 2 characters)</span>
+      </div>
+      <div class="form-row">
+        <div class="form-group half-width">
+          <input type="email" class="form-input" name="email" placeholder="Email *" required>
+          <span class="error-message">Please enter a valid email address</span>
+        </div>
+        <div class="form-group half-width">
+          <input type="tel" class="form-input" name="phoneNumber" placeholder="Phone Number *" maxlength="10" required>
+          <span class="error-message">Please enter a valid 10-digit phone number</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half-width">
+          <select class="form-input" name="gender" required>
+            <option value="">Select Gender *</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+            <option value="prefer-not-to-say">Prefer not to say</option>
+          </select>
+          <span class="error-message">Please select your gender</span>
+        </div>
+        <div class="form-group half-width">
+          <input type="date" class="form-input" name="dateOfBirth" placeholder="Date of Birth *" required>
+          <span class="error-message">Please enter your date of birth</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <textarea class="form-input" name="address" placeholder="Complete Address" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group half-width">
+          <input type="url" class="form-input" name="linkedinProfile" placeholder="LinkedIn Profile">
+          <span class="error-message">Please enter a valid LinkedIn URL</span>
+        </div>
+        <div class="form-group half-width">
+          <input type="url" class="form-input" name="portfolioGithub" placeholder="Portfolio / GitHub">
+          <span class="error-message">Please enter a valid URL</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half-width">
+          <input type="text" class="form-input" name="nationality" placeholder="Nationality">
+        </div>
+        <div class="form-group half-width">
+          <select class="form-input" name="maritalStatus">
+            <option value="">Marital Status</option>
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+            <option value="divorced">Divorced</option>
+            <option value="widowed">Widowed</option>
+          </select>
+        </div>
+      </div>
+
+      <h2>Career Objective</h2>
+      <div class="career-objective-section">
+        <textarea class="form-input" name="careerObjective" id="careerObjective" placeholder="Write a short career objective..." rows="4"></textarea>
+        <div class="career-buttons">
+          <button type="button" class="career-btn" id="generateBtn">
+            <i class="fas fa-magic"></i>Generate
+          </button>
+          <button type="button" class="career-btn" id="optimizeBtn">
+            <i class="fas fa-edit"></i>Optimize
+          </button>
+        </div>
+      </div>
+
+      <h2>Education</h2>
+      <div class="education-section">
+        <h3>10th Standard</h3>
+        <div class="form-row">
+          <div class="form-group half-width">
+            <input type="text" class="form-input" name="tenth_board" placeholder="Board/University">
+          </div>
+          <div class="form-group quarter-width">
+            <input type="text" class="form-input" name="tenth_year" placeholder="Year">
+          </div>
+          <div class="form-group quarter-width">
+            <input type="text" class="form-input" name="tenth_percentage" placeholder="Percentage/CGPA">
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-input" name="tenth_school" placeholder="School Name">
+        </div>
+
+        <h3>12th Standard</h3>
+        <div class="form-row">
+          <div class="form-group half-width">
+            <input type="text" class="form-input" name="twelfth_board" placeholder="Board/University">
+          </div>
+          <div class="form-group quarter-width">
+            <input type="text" class="form-input" name="twelfth_year" placeholder="Year">
+          </div>
+          <div class="form-group quarter-width">
+            <input type="text" class="form-input" name="twelfth_percentage" placeholder="Percentage/CGPA">
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-input" name="twelfth_school" placeholder="School/College Name">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-input" name="twelfth_stream" placeholder="Stream (Science/Commerce/Arts)">
+        </div>
+
+        <h3>Bachelor's Degree</h3>
+        <div class="form-row">
+          <div class="form-group half-width">
+            <input type="text" class="form-input" name="bachelor_degree" placeholder="Degree (e.g. B.Tech CSE, B.Com, BA English)">
+          </div>
+          <div class="form-group quarter-width">
+            <input type="text" class="form-input" name="bachelor_year" placeholder="Year">
+          </div>
+          <div class="form-group quarter-width">
+            <input type="text" class="form-input" name="bachelor_cgpa" placeholder="CGPA/Percentage">
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-input" name="bachelor_college" placeholder="College/University Name">
+        </div>
+
+        <h3>Master's Degree (Optional)</h3>
+        <div class="form-row">
+          <div class="form-group half-width">
+            <input type="text" class="form-input" name="master_degree" placeholder="Degree (e.g. M.Tech, MBA, MA)">
+          </div>
+          <div class="form-group quarter-width">
+            <input type="text" class="form-input" name="master_year" placeholder="Year">
+          </div>
+          <div class="form-group quarter-width">
+            <input type="text" class="form-input" name="master_cgpa" placeholder="CGPA/Percentage">
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-input" name="master_college" placeholder="College/University Name">
+        </div>
+
+        <h3>Additional Qualifications (Optional)</h3>
+        <div class="form-group">
+          <textarea class="form-input point-wise-field" name="additional_qualifications" placeholder="Any additional degrees, diplomas, or certifications..." rows="3"></textarea>
+          <div class="format-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            For better formatting, please use bullet points (•) or dashes (-) at the start of each line for individual qualifications.
+          </div>
+        </div>
+      </div>
+
+      <h2>Skills</h2>
+      <div class="skills-section">
+        <h3>Technical Skills</h3>
+        <div class="form-group">
+          <textarea class="form-input point-wise-field" name="technical_skills" placeholder="• Programming Languages (e.g., Python, Java, JavaScript)&#10;• Frameworks & Libraries (e.g., React, Angular, Django)&#10;• Databases (e.g., MySQL, MongoDB)&#10;• Tools & Technologies (e.g., Git, Docker, AWS)&#10;• Software & Applications (e.g., MS Office, Adobe Creative Suite)" rows="6"></textarea>
+          <small class="form-help">List each skill on a new line with bullet points</small>
+          <div class="format-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            Please use bullet points (•) or dashes (-) at the start of each line for better formatting and ATS compatibility.
+          </div>
+        </div>
+
+        <h3>Soft Skills</h3>
+        <div class="form-group">
+          <textarea class="form-input point-wise-field" name="soft_skills" placeholder="• Leadership & Team Management&#10;• Communication & Presentation&#10;• Problem Solving & Analytical Thinking&#10;• Time Management & Organization&#10;• Adaptability & Learning Agility" rows="5"></textarea>
+          <small class="form-help">List each skill on a new line with bullet points</small>
+          <div class="format-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            Please use bullet points (•) or dashes (-) at the start of each line for better formatting and ATS compatibility.
+          </div>
+        </div>
+      </div>
+
+      <h2>Work Experience</h2>
+      <div class="form-group">
+        <textarea class="form-input point-wise-field" name="workExperience" placeholder="• Company Name - Position Title (Duration)&#10;  - Key responsibility or achievement&#10;  - Another key responsibility or achievement&#10;&#10;• Previous Company - Position Title (Duration)&#10;  - Key responsibility or achievement&#10;  - Another key responsibility or achievement" rows="8"></textarea>
+        <small class="form-help">Use bullet points for each role and sub-points for responsibilities</small>
+        <div class="format-warning">
+          <i class="fas fa-exclamation-triangle"></i>
+          Please use bullet points (•) for each company/role and sub-points (-) for responsibilities. This improves readability and ATS parsing.
+        </div>
+      </div>
+
+      <h2>Projects</h2>
+      <div class="form-group">
+        <textarea class="form-input point-wise-field" name="projects" placeholder="• Project Name - Brief Description&#10;  - Technology/tools used&#10;  - Key features or outcomes&#10;  - Link to project (if available)&#10;&#10;• Another Project Name - Brief Description&#10;  - Technology/tools used&#10;  - Key features or outcomes" rows="8"></textarea>
+        <small class="form-help">Use bullet points for each project and sub-points for details</small>
+        <div class="format-warning">
+          <i class="fas fa-exclamation-triangle"></i>
+          Please use bullet points (•) for each project and sub-points (-) for details. This improves readability and ATS parsing.
+        </div>
+      </div>
+
+      <h2>Certifications & Training</h2>
+      <div class="form-group">
+        <textarea class="form-input point-wise-field" name="certifications" placeholder="• Certification Name - Issuing Organization (Date)&#10;• Online Course Title - Platform (Completion Date)&#10;• Workshop/Training Program - Institution (Date)&#10;• Professional License - Authority (Validity)" rows="6"></textarea>
+        <small class="form-help">List each certification on a new line with bullet points</small>
+        <div class="format-warning">
+          <i class="fas fa-exclamation-triangle"></i>
+          Please use bullet points (•) or dashes (-) at the start of each line for better formatting and ATS compatibility.
+        </div>
+      </div>
+
+      <h2>Achievements & Awards</h2>
+      <div class="form-group">
+        <textarea class="form-input point-wise-field" name="achievements" placeholder="• Award/Recognition Name - Organization/Institution (Year)&#10;• Competition/Contest Achievement - Event Name (Year)&#10;• Academic Honor/Scholarship - Institution (Year)&#10;• Professional Achievement - Company/Organization (Year)" rows="5"></textarea>
+        <small class="form-help">List each achievement on a new line with bullet points</small>
+        <div class="format-warning">
+          <i class="fas fa-exclamation-triangle"></i>
+          Please use bullet points (•) or dashes (-) at the start of each line for better formatting and ATS compatibility.
+        </div>
+      </div>
+
+      <h2>Additional Information</h2>
+      <div class="form-row">
+        <div class="form-group half-width">
+          <input type="text" class="form-input" name="languagesKnown" placeholder="Languages (e.g. English, Hindi, Telugu)">
+        </div>
+        <div class="form-group half-width">
+          <input type="text" class="form-input" name="hobbies" placeholder="Hobbies & Interests (e.g. Reading, Coding, Sports)">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <textarea class="form-input point-wise-field" name="references" placeholder="• Reference Name - Position, Company&#10;  Contact: email@company.com, +91-9876543210&#10;• Another Reference - Position, Company&#10;  Contact: email@company.com, +91-9876543210" rows="4"></textarea>
+        <small class="form-help">List each reference with contact information</small>
+        <div class="format-warning">
+          <i class="fas fa-exclamation-triangle"></i>
+          Please use bullet points (•) for each reference and include their contact information for better organization.
+        </div>
+      </div>
+
+      <h2>Create Account</h2>
+      <div class="form-group">
+        <input type="text" class="form-input" name="username" placeholder="Username *" required>
+        <span class="error-message">Username must be 3-20 characters long and contain only letters, numbers, and underscores</span>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-input" name="password" placeholder="Password *" required maxlength="20" id="passwordField">
+        <span class="error-message" id="passwordError">Password must be 8-20 characters with at least one letter, one number, and one symbol</span>
+        <div class="password-requirements" id="passwordRequirements">
+          <span class="password-requirement" id="lengthReq">
+            <i class="fas fa-times"></i>8-20 characters long
+          </span>
+          <span class="password-requirement" id="letterReq">
+            <i class="fas fa-times"></i>At least one letter (a-z, A-Z)
+          </span>
+          <span class="password-requirement" id="numberReq">
+            <i class="fas fa-times"></i>At least one number (0-9)
+          </span>
+          <span class="password-requirement" id="symbolReq">
+            <i class="fas fa-times"></i>At least one symbol (@, #, $, %, etc.)
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-input" name="confirmPassword" placeholder="Confirm Password *" required maxlength="20">
+        <span class="error-message">Passwords do not match</span>
+      </div>
+
+      <div class="form-options">
+        <div class="checkbox-group">
+          <input type="checkbox" id="remember-me">
+          <label for="remember-me">Remember Me</label>
+        </div>
+      </div>
+      <button type="submit" class="registration-button">Generate Resume & Register</button>
+    </form>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const registrationForm = document.querySelector('.resume-form');
+        const inputs = registrationForm.querySelectorAll('.form-input');
+        const careerObjectiveTextarea = document.getElementById('careerObjective');
+        const generateBtn = document.getElementById('generateBtn');
+        const optimizeBtn = document.getElementById('optimizeBtn');
+        
+        // Password validation elements
+        const passwordField = document.getElementById('passwordField');
+        const passwordRequirements = document.getElementById('passwordRequirements');
+        const lengthReq = document.getElementById('lengthReq');
+        const letterReq = document.getElementById('letterReq');
+        const numberReq = document.getElementById('numberReq');
+        const symbolReq = document.getElementById('symbolReq');
+        
+        // Point-wise field validation
+        const pointWiseFields = document.querySelectorAll('.point-wise-field');
+        
+        // Profile image upload functionality
+        const profileImageInput = document.getElementById('profileImageInput');
+        const uploadImageBtn = document.getElementById('uploadImageBtn');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const defaultIcon = document.getElementById('defaultIcon');
+        let currentImageData = null;
+
+        uploadImageBtn.addEventListener('click', function() {
+            profileImageInput.click();
+        });
+
+        profileImageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB');
+                    return;
+                }
+
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select a valid image file');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImageData = e.target.result;
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                    defaultIcon.style.display = 'none';
+                    removeImageBtn.style.display = 'inline-flex';
+                    uploadImageBtn.innerHTML = '<i class="fas fa-camera"></i>Change Photo';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removeImageBtn.addEventListener('click', function() {
+            currentImageData = null;
+            previewImg.style.display = 'none';
+            previewImg.src = '';
+            defaultIcon.style.display = 'block';
+            removeImageBtn.style.display = 'none';
+            uploadImageBtn.innerHTML = '<i class="fas fa-camera"></i>Upload Photo';
+            profileImageInput.value = '';
+        });
+        
+        // Enhanced password validation
+        function validatePasswordStrength(password) {
+            const requirements = {
+                length: password.length >= 8 && password.length <= 20,
+                letter: /[a-zA-Z]/.test(password),
+                number: /[0-9]/.test(password),
+                symbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>?~`]/.test(password)
+            };
+            
+            return requirements;
+        }
+        
+        function updatePasswordRequirements(password) {
+            const reqs = validatePasswordStrength(password);
+            
+            // Update length requirement
+            if (reqs.length) {
+                lengthReq.classList.add('valid');
+                lengthReq.classList.remove('invalid');
+                lengthReq.querySelector('i').className = 'fas fa-check';
+            } else {
+                lengthReq.classList.add('invalid');
+                lengthReq.classList.remove('valid');
+                lengthReq.querySelector('i').className = 'fas fa-times';
+            }
+            
+            // Update letter requirement
+            if (reqs.letter) {
+                letterReq.classList.add('valid');
+                letterReq.classList.remove('invalid');
+                letterReq.querySelector('i').className = 'fas fa-check';
+            } else {
+                letterReq.classList.add('invalid');
+                letterReq.classList.remove('valid');
+                letterReq.querySelector('i').className = 'fas fa-times';
+            }
+            
+            // Update number requirement
+            if (reqs.number) {
+                numberReq.classList.add('valid');
+                numberReq.classList.remove('invalid');
+                numberReq.querySelector('i').className = 'fas fa-check';
+            } else {
+                numberReq.classList.add('invalid');
+                numberReq.classList.remove('valid');
+                numberReq.querySelector('i').className = 'fas fa-times';
+            }
+            
+            // Update symbol requirement
+            if (reqs.symbol) {
+                symbolReq.classList.add('valid');
+                symbolReq.classList.remove('invalid');
+                symbolReq.querySelector('i').className = 'fas fa-check';
+            } else {
+                symbolReq.classList.add('invalid');
+                symbolReq.classList.remove('valid');
+                symbolReq.querySelector('i').className = 'fas fa-times';
+            }
+            
+            return reqs.length && reqs.letter && reqs.number && reqs.symbol;
+        }
+        
+        // Real-time password validation
+        passwordField.addEventListener('input', function() {
+            const password = this.value;
+            const isValid = updatePasswordRequirements(password);
+            
+            if (password.length > 0) {
+                passwordRequirements.style.display = 'block';
+            } else {
+                passwordRequirements.style.display = 'none';
+            }
+            
+            if (isValid && password.length > 0) {
+                showSuccess(this);
+            } else if (password.length > 0) {
+                showError(this);
+            } else {
+                clearValidation(this);
+            }
+        });
+        
+        passwordField.addEventListener('focus', function() {
+            if (this.value.length > 0) {
+                passwordRequirements.style.display = 'block';
+            }
+        });
+        
+        passwordField.addEventListener('blur', function() {
+            setTimeout(() => {
+                passwordRequirements.style.display = 'none';
+            }, 200);
+        });
+        
+        // Point-wise validation function
+        function validatePointWiseFormat(text) {
+            if (!text || text.trim().length === 0) {
+                return true; // Empty is okay
+            }
+            
+            const lines = text.split('\n').filter(line => line.trim().length > 0);
+            if (lines.length === 0) return true;
+            
+            // Check if at least 50% of non-empty lines start with bullet points or dashes
+            const pointWiseLines = lines.filter(line => {
+                const trimmed = line.trim();
+                return trimmed.startsWith('•') || trimmed.startsWith('-') || trimmed.startsWith('*') || 
+                       trimmed.startsWith('○') || trimmed.startsWith('►') || /^\d+\./.test(trimmed);
+            });
+            
+            return pointWiseLines.length >= Math.ceil(lines.length * 0.5);
+        }
+        
+        // Real-time point-wise validation
+        pointWiseFields.forEach(field => {
+            const warningDiv = field.parentElement.querySelector('.format-warning');
+            
+            field.addEventListener('input', function() {
+                const isValid = validatePointWiseFormat(this.value);
+                const hasContent = this.value.trim().length > 0;
+                
+                if (hasContent && !isValid) {
+                    warningDiv.classList.add('show');
+                    this.style.borderColor = '#ffc107';
+                } else {
+                    warningDiv.classList.remove('show');
+                    this.style.borderColor = '';
+                }
+            });
+            
+            field.addEventListener('blur', function() {
+                const isValid = validatePointWiseFormat(this.value);
+                const hasContent = this.value.trim().length > 0;
+                
+                if (hasContent && !isValid) {
+                    warningDiv.classList.add('show');
+                } else {
+                    warningDiv.classList.remove('show');
+                }
+            });
+        });
+        
+        // Sample career objectives for generation
+        const sampleObjectives = [
+            "Seeking a challenging position in software development where I can utilize my technical skills and contribute to innovative projects while continuously learning and growing professionally.",
+            "To leverage my analytical skills and passion for technology in a dynamic role that allows me to solve complex problems and deliver impactful solutions.",
+            "Aspiring to join a forward-thinking organization where I can apply my expertise in computer science to develop cutting-edge applications and contribute to team success.",
+            "To secure a position that offers professional challenges utilizing my technical knowledge and interpersonal skills, where I can apply my education and experience to make meaningful contributions.",
+            "Dedicated to pursuing a career in technology where I can combine my technical expertise with creative problem-solving to drive innovation and business growth.",
+            "To leverage my technical knowledge and analytical skills in a challenging environment that fosters professional growth and continuous learning.",
+            "Seeking a position where I can utilize my programming and problem-solving skills to contribute to innovative projects while enhancing my professional expertise.",
+            "To work in a dynamic organization that provides opportunities to apply my management and organizational skills for mutual growth and success.",
+            "To pursue a career in a reputed organization where I can utilize my analytical and financial skills, contributing effectively to organizational goals.",
+            "To develop my skills in marketing and customer engagement, while contributing to the growth and success of the organization.",
+            "To apply my academic knowledge and teaching skills in a supportive environment that encourages learning and personal development.",
+            "To utilize my knowledge and skills in healthcare for providing quality services while continuously upgrading my professional competencies.",
+            "To secure a position in a progressive organization where I can apply my skills, learn from challenges, and contribute to the company's growth."
+        ];
+
+        generateBtn.addEventListener('click', function() {
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Generating...';
+            setTimeout(() => {
+                const degree = registrationForm.querySelector('input[name="bachelor_degree"]').value;
+                const skills = registrationForm.querySelector('textarea[name="technical_skills"]').value;
+                const workExperience = registrationForm.querySelector('textarea[name="workExperience"]').value;
+                let objective = generatePersonalizedObjective(degree, skills, workExperience);
+                if (!objective) {
+                    objective = sampleObjectives[Math.floor(Math.random() * sampleObjectives.length)];
+                }
+                careerObjectiveTextarea.value = objective;
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<i class="fas fa-magic"></i>Generate';
+                careerObjectiveTextarea.style.borderColor = '#28a745';
+                setTimeout(() => {
+                    careerObjectiveTextarea.style.borderColor = '#ccc';
+                }, 2000);
+            }, 1500);
+        });
+
+        optimizeBtn.addEventListener('click', function() {
+            const currentText = careerObjectiveTextarea.value.trim();
+            
+            if (!currentText) {
+                alert('Please enter a career objective first to optimize it.');
+                return;
+            }
+            optimizeBtn.disabled = true;
+            optimizeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Optimizing...';
+            setTimeout(() => {
+                const optimizedText = optimizeCareerObjective(currentText);
+                careerObjectiveTextarea.value = optimizedText;
+                optimizeBtn.disabled = false;
+                optimizeBtn.innerHTML = '<i class="fas fa-edit"></i>Optimize';
+                careerObjectiveTextarea.style.borderColor = '#007bff';
+                setTimeout(() => {
+                    careerObjectiveTextarea.style.borderColor = '#ccc';
+                }, 2000);
+            }, 1500);
+        });
+        
+        function generatePersonalizedObjective(degree, skills, experience) {
+            let objective = "";
+            
+            if (degree || skills || experience) {
+                objective = "Seeking a challenging position";
+                
+                if (degree && degree.toLowerCase().includes('tech')) {
+                    objective += " in software development and technology";
+                } else if (degree && degree.toLowerCase().includes('business')) {
+                    objective += " in business and management";
+                } else if (degree) {
+                    objective += " in my field of study";
+                }
+                
+                objective += " where I can utilize my";
+                
+                if (skills) {
+                    if (skills.toLowerCase().includes('programming') || skills.toLowerCase().includes('coding')) {
+                        objective += " programming expertise";
+                    } else if (skills.toLowerCase().includes('design')) {
+                        objective += " design skills";
+                    } else {
+                        objective += " technical skills";
+                    }
+                } else {
+                    objective += " knowledge and abilities";
+                }
+                
+                if (experience) {
+                    objective += " and practical experience";
+                }
+                
+                objective += " to contribute to innovative projects while continuously learning and advancing my professional career.";
+                
+                return objective;
+            }
+            
+            return null;
+        }
+        
+        function optimizeCareerObjective(text) {
+            let optimized = text;
+            
+            optimized = optimized.replace(/\b(very|really|quite|extremely)\s+/gi, '');
+            optimized = optimized.replace(/\bwant to\b/gi, 'aspire to');
+            optimized = optimized.replace(/\bwould like to\b/gi, 'seek to');
+            optimized = optimized.replace(/\bhope to\b/gi, 'aim to');
+            optimized = optimized.replace(/\btry to\b/gi, 'strive to');
+            optimized = optimized.replace(/\bget a job\b/gi, 'secure a position');
+            optimized = optimized.replace(/\bwork in\b/gi, 'contribute to');
+            optimized = optimized.replace(/\blearn more\b/gi, 'expand my expertise');
+            optimized = optimized.replace(/\bgood at\b/gi, 'proficient in');
+            optimized = optimized.replace(/\bhelp\b/gi, 'support');
+            
+            if (!optimized.match(/^(Seeking|To|Aspiring|Dedicated|Passionate)/)) {
+                if (optimized.toLowerCase().startsWith('i ')) {
+                    optimized = optimized.replace(/^i\s+/i, 'Seeking to ');
+                } else {
+                    optimized = 'Seeking ' + optimized.toLowerCase();
+                }
+            }
+            
+            optimized = optimized.charAt(0).toUpperCase() + optimized.slice(1);
+            
+            if (!optimized.endsWith('.')) {
+                optimized += '.';
+            }
+            
+            optimized = optimized.replace(/\s+/g, ' ').trim();
+            
+            return optimized;
+        }
+        
+        // Enhanced validation functions
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function validatePhone(phone) {
+            const phoneRegex = /^[0-9]{10}$/;
+            return phoneRegex.test(phone.replace(/\s|-/g, ''));
+        }
+        
+        function validateURL(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+        
+        function validateUsername(username) {
+            const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+            return usernameRegex.test(username);
+        }
+        
+        function validatePassword(password) {
+            const requirements = validatePasswordStrength(password);
+            return requirements.length && requirements.letter && requirements.number && requirements.symbol;
+        }
+        
+        function validateYear(year) {
+            const currentYear = new Date().getFullYear();
+            const yearNum = parseInt(year);
+            return yearNum >= 1950 && yearNum <= currentYear + 10;
+        }
+        
+        function validateGrade(grade) {
+            const gradeNum = parseFloat(grade);
+            return (gradeNum >= 0 && gradeNum <= 100) || (gradeNum >= 0 && gradeNum <= 10);
+        }
+        
+        function validateAge(dateOfBirth) {
+            const today = new Date();
+            const birthDate = new Date(dateOfBirth);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            return age >= 16 && age <= 100;
+        }
+        
+        function showError(input, message) {
+            input.classList.remove('valid');
+            input.classList.add('invalid');
+            const errorSpan = input.parentElement.querySelector('.error-message');
+            if (errorSpan) {
+                if (message) errorSpan.textContent = message;
+                errorSpan.style.display = 'block';
+            }
+        }
+        
+        function showSuccess(input) {
+            input.classList.remove('invalid');
+            input.classList.add('valid');
+            const errorSpan = input.parentElement.querySelector('.error-message');
+            if (errorSpan) {
+                errorSpan.style.display = 'none';
+            }
+        }
+        
+        function clearValidation(input) {
+            input.classList.remove('valid', 'invalid');
+            const errorSpan = input.parentElement.querySelector('.error-message');
+            if (errorSpan) {
+                errorSpan.style.display = 'none';
+            }
+        }
+        
+        // Enhanced real-time validation
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                const value = this.value.trim();
+                const name = this.name;
+                
+                if (!value && !this.required) {
+                    clearValidation(this);
+                    return;
+                }
+                
+                if (this.required && !value) {
+                    showError(this, 'This field is required');
+                    return;
+                }
+                
+                switch(name) {
+                    case 'fullName':
+                        if (value.length < 2) {
+                            showError(this, 'Full name must be at least 2 characters long');
+                        } else if (!/^[a-zA-Z\s]+$/.test(value)) {
+                            showError(this, 'Full name should only contain letters and spaces');
+                        } else {
+                            showSuccess(this);
+                        }
+                        break;
+                        
+                    case 'email':
+                        if (!validateEmail(value)) {
+                            showError(this, 'Please enter a valid email address');
+                        } else {
+                            showSuccess(this);
+                        }
+                        break;
+                        
+                    case 'phoneNumber':
+                        if (!validatePhone(value)) {
+                            showError(this, 'Please enter a valid 10-digit phone number');
+                        } else {
+                            showSuccess(this);
+                        }
+                        break;
+                        
+                    case 'dateOfBirth':
+                        if (value && !validateAge(value)) {
+                            showError(this, 'Age must be between 16 and 100 years');
+                        } else {
+                            showSuccess(this);
+                        }
+                        break;
+                        
+                    case 'linkedinProfile':
+                        if (value) {
+                            if (!validateURL(value)) {
+                                showError(this, 'Please enter a valid URL');
+                            } else if (!value.toLowerCase().includes('linkedin.com')) {
+                                showError(this, 'Please enter a valid LinkedIn URL');
+                            } else {
+                                showSuccess(this);
+                            }
+                        } else {
+                            clearValidation(this);
+                        }
+                        break;
+                        
+                    case 'portfolioGithub':
+                        if (value && !validateURL(value)) {
+                            showError(this, 'Please enter a valid URL');
+                        } else {
+                            showSuccess(this);
+                        }
+                        break;
+                        
+                    case 'tenth_year':
+                    case 'twelfth_year':
+                    case 'bachelor_year':
+                    case 'master_year':
+                        if (value && !validateYear(value)) {
+                            showError(this, 'Please enter a valid year (1950-' + (new Date().getFullYear() + 10) + ')');
+                        } else {
+                            showSuccess(this);
+                        }
+                        break;
+                        
+                    case 'tenth_percentage':
+                    case 'twelfth_percentage':
+                    case 'bachelor_cgpa':
+                    case 'master_cgpa':
+                        if (value && !validateGrade(value)) {
+                            showError(this, 'Please enter a valid percentage (0-100) or CGPA (0-10)');
+                        } else {
+                            showSuccess(this);
+                        }
+                        break;
+                        
+                    case 'username':
+                        if (!validateUsername(value)) {
+                            showError(this, 'Username must be 3-20 characters, letters, numbers, and underscores only');
+                        } else {
+                            showSuccess(this);
+                        }
+                        break;
+                        
+                    case 'password':
+                        if (!validatePassword(value)) {
+                            showError(this, 'Password must meet all requirements shown above');
+                        } else {
+                            showSuccess(this);
+                            const confirmPassword = registrationForm.querySelector('input[name="confirmPassword"]');
+                            if (confirmPassword.value) {
+                                confirmPassword.dispatchEvent(new Event('blur'));
+                            }
+                        }
+                        break;
+                        
+                    case 'confirmPassword':
+                        const password = registrationForm.querySelector('input[name="password"]').value;
+                        if (value !== password) {
+                            showError(this, 'Passwords do not match');
+                        } else {
+                            showSuccess(this);
+                        }
+                        break;
+                        
+                    default:
+                        if (this.required && value) {
+                            showSuccess(this);
+                        } else if (value) {
+                            showSuccess(this);
+                        }
+                }
+            });
+            
+            input.addEventListener('input', function() {
+                if (this.classList.contains('invalid') || this.classList.contains('valid')) {
+                    if (this.name !== 'password') {
+                        clearValidation(this);
+                    }
+                }
+            });
+        });
+        
+        registrationForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            let isValid = true;
+            inputs.forEach(input => {
+                input.dispatchEvent(new Event('blur'));
+                if (input.classList.contains('invalid')) {
+                    isValid = false;
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fix all validation errors before submitting.');
+                return;
+            }
+            
+            const formData = new FormData(this);
+            const submitButton = document.querySelector('.registration-button');
+            
+            submitButton.textContent = 'Creating Account...';
+            submitButton.disabled = true;
+            
+            try {
+                const registrationData = {};
+                for (const [key, value] of formData.entries()) {
+                    registrationData[key] = value;
+                }
+                
+                if (currentImageData) {
+                    registrationData.profileImage = currentImageData;
+                }
+                
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registrationData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Registration successful! Your profile image and resume have been saved. Redirecting to profile...');
+                    sessionStorage.setItem('userId', result.userId);
+                    window.location.href = 'profile.html';
+                } else {
+                    throw new Error(result.message);
+                }
+                
+            } catch (error) {
+                alert('Registration failed: ' + error.message);
+            } finally {
+                submitButton.textContent = 'Generate Resume & Register';
+                submitButton.disabled = false;
+            }
+        });
+    });
+  </script>
+</body>
+</html>
