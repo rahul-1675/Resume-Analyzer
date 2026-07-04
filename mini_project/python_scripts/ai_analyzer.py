@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ELEVYA AI Profile Analyzer
+Resume Analyzer - AI Profile Analyzer
 Generates personalized improvement suggestions for ATS score optimization
 """
 

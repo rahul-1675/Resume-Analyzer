@@ -1,7 +1,7 @@
 {
-  "name": "elevya-server",
+  "name": "resume-analyzer-server",
   "version": "1.0.0",
-  "description": "ELEVYA Resume Builder Server",
+  "description": "Resume Analyzer Server",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
