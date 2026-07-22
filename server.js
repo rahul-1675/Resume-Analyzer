@@ -6,7 +6,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const PDFDocument = require('pdfkit');
 const multer = require('multer');
-const pdfParse = require('pdf-parse');
+const pdfParse = require('pdf-parse/lib/pdf-parse.js');
 const { spawn } = require('child_process');
 const util = require('util');
 
