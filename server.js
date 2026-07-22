@@ -260,6 +260,19 @@ function readExcelFile() {
         
         const worksheet = XLSX.utils.aoa_to_sheet(userData);
         XLSX.utils.book_append_sheet(workbook, worksheet, 'User_Registration');
+
+        const resumeData = [
+            ['Resume_ID', 'User_ID', 'Resume_Filename', 'Resume_Path', 'Generated_Date', 'File_Size', 'Status']
+        ];
+        const resumeWorksheet = XLSX.utils.aoa_to_sheet(resumeData);
+        XLSX.utils.book_append_sheet(workbook, resumeWorksheet, 'Resume_Storage');
+
+        const atsData = [
+            ['User_ID', 'ATS_Score', 'Keywords_Match', 'Format_Quality', 'Completeness', 'Last_Updated', 'Resume_Version']
+        ];
+        const atsWorksheet = XLSX.utils.aoa_to_sheet(atsData);
+        XLSX.utils.book_append_sheet(workbook, atsWorksheet, 'ATS_Scores');
+
         XLSX.writeFile(workbook, EXCEL_FILE);
         return workbook;
     }
