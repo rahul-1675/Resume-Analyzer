@@ -6,6 +6,12 @@ const fs = require('fs');
 const crypto = require('crypto');
 const PDFDocument = require('pdfkit');
 const multer = require('multer');
+const pdfParse = require('pdf-parse');
+
+const resumeMemoryUpload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 }
+});
 
 const app = express();
 app.use(express.json({ limit: '10mb' }));
@@ -1541,6 +1547,183 @@ app.post('/api/upload-profile-image-base64', (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Failed to upload profile image: ' + error.message
+        });
+    }
+});
+
+// Resume parsing function to extract profile fields from raw text
+function parseResumeTextContent(rawText) {
+    const text = rawText.replace(/\r/g, '');
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    const parsed = {
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+        linkedinProfile: '',
+        portfolioGithub: '',
+        address: '',
+        technicalSkills: '',
+        softSkills: '',
+        careerObjective: '',
+        bachelorDegree: '',
+        bachelorCollege: '',
+        bachelorYear: '',
+        bachelorCGPA: '',
+        masterDegree: '',
+        masterCollege: '',
+        masterYear: '',
+        masterCGPA: '',
+        workExperience: '',
+        projects: '',
+        certifications: '',
+        achievements: ''
+    };
+
+    // Email
+    const emailMatch = text.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
+    if (emailMatch) parsed.email = emailMatch[1];
+
+    // Phone number
+    const phoneMatch = text.match(/(?:(?:\+|00)91[\s-]?)?[6-9]\d{9}/) || text.match(/\+?\d[\d\s-]{8,14}\d/);
+    if (phoneMatch) {
+        const cleanedPhone = phoneMatch[0].replace(/\D/g, '');
+        parsed.phoneNumber = cleanedPhone.length >= 10 ? cleanedPhone.slice(-10) : cleanedPhone;
+    }
+
+    // Social Links
+    const linkedinMatch = text.match(/(https?:\/\/(?:www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+|(?:www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+)/i);
+    if (linkedinMatch) {
+        let url = linkedinMatch[0];
+        if (!url.startsWith('http')) url = 'https://' + url;
+        parsed.linkedinProfile = url;
+    }
+
+    const githubMatch = text.match(/(https?:\/\/(?:www\.)?github\.com\/[a-zA-Z0-9_-]+|(?:www\.)?github\.com\/[a-zA-Z0-9_-]+)/i);
+    if (githubMatch) {
+        let url = githubMatch[0];
+        if (!url.startsWith('http')) url = 'https://' + url;
+        parsed.portfolioGithub = url;
+    }
+
+    // Name Heuristic (first prominent line not email/url/title)
+    for (const line of lines.slice(0, 8)) {
+        if (!line.includes('@') && !line.match(/resume|curriculum|cv|contact|page|email|phone/i) && line.length > 2 && line.length < 40 && !/\d/.test(line)) {
+            parsed.fullName = line.replace(/[^a-zA-Z\s.]/g, '').trim();
+            break;
+        }
+    }
+
+    // Tech Skills
+    const techSkillList = [
+        'Python', 'Java', 'JavaScript', 'TypeScript', 'C++', 'C#', 'PHP', 'Ruby', 'Go', 'Rust', 'Swift', 'Kotlin', 'R',
+        'HTML', 'HTML5', 'CSS', 'CSS3', 'Sass', 'React', 'React.js', 'Angular', 'Vue.js', 'Node.js', 'Express', 'Express.js',
+        'Django', 'Flask', 'Spring Boot', 'Bootstrap', 'Tailwind', 'jQuery', 'SQL', 'MySQL', 'PostgreSQL', 'MongoDB',
+        'Oracle', 'Redis', 'SQLite', 'Git', 'GitHub', 'GitLab', 'Docker', 'Kubernetes', 'AWS', 'Azure', 'GCP', 'Linux',
+        'REST API', 'GraphQL', 'Machine Learning', 'Deep Learning', 'Data Analysis', 'Pandas', 'NumPy', 'Scikit-learn', 'TensorFlow', 'PyTorch'
+    ];
+    const foundTechSkills = new Set();
+    techSkillList.forEach(skill => {
+        const regex = new RegExp(`\\b${skill.replace('.', '\\.')}\\b`, 'i');
+        if (regex.test(text)) {
+            foundTechSkills.add(skill);
+        }
+    });
+    if (foundTechSkills.size > 0) {
+        parsed.technicalSkills = Array.from(foundTechSkills).map(s => `• ${s}`).join('\n');
+    }
+
+    // Soft Skills
+    const softSkillList = [
+        'Communication', 'Leadership', 'Problem Solving', 'Teamwork', 'Time Management', 'Adaptability',
+        'Critical Thinking', 'Work Ethic', 'Creativity', 'Collaboration', 'Decision Making', 'Analytical Skills'
+    ];
+    const foundSoftSkills = new Set();
+    softSkillList.forEach(skill => {
+        const regex = new RegExp(`\\b${skill}\\b`, 'i');
+        if (regex.test(text)) {
+            foundSoftSkills.add(skill);
+        }
+    });
+    if (foundSoftSkills.size > 0) {
+        parsed.softSkills = Array.from(foundSoftSkills).map(s => `• ${s}`).join('\n');
+    }
+
+    // Section Extraction Helper
+    const extractSection = (keywords) => {
+        const regex = new RegExp(`(?:^|\\n)\\s*(?:${keywords.join('|')})\\s*[:\\-]?\\s*\\n?([\\s\\S]*?)(?=\\n\\s*(?:education|experience|work experience|projects|skills|summary|objective|certifications|achievements|languages|references)|$)`, 'i');
+        const match = text.match(regex);
+        if (match && match[1]) {
+            return match[1].trim().slice(0, 1000);
+        }
+        return '';
+    };
+
+    parsed.careerObjective = extractSection(['summary', 'profile summary', 'career objective', 'objective', 'about me']);
+    parsed.workExperience = extractSection(['experience', 'work experience', 'employment history', 'work history', 'professional experience']);
+    parsed.projects = extractSection(['projects', 'key projects', 'academic projects', 'personal projects']);
+    parsed.certifications = extractSection(['certifications', 'licenses', 'courses', 'certifications & licenses']);
+    parsed.achievements = extractSection(['achievements', 'awards', 'honors', 'accomplishments']);
+
+    // Education Extraction
+    const bachelorMatch = text.match(/(B\.?\s*Tech|B\.?\s*E|B\.?\s*Sc|BCA|Bachelor[^\n,]*)/i);
+    if (bachelorMatch) parsed.bachelorDegree = bachelorMatch[0].trim();
+
+    const masterMatch = text.match(/(M\.?\s*Tech|M\.?\s*E|M\.?\s*Sc|MCA|Master[^\n,]*)/i);
+    if (masterMatch) parsed.masterDegree = masterMatch[0].trim();
+
+    const cgpaMatch = text.match(/(?:CGPA|GPA|Percentage|Marks)[:\s]*([\d.]+\s*(?:\/10|%)?)/i) || text.match(/\b([89]\.\d{1,2}|[789]\d%)\b/);
+    if (cgpaMatch) parsed.bachelorCGPA = cgpaMatch[1].trim();
+
+    const yearMatch = text.match(/\b(20[0-2][0-9])\b/);
+    if (yearMatch) parsed.bachelorYear = yearMatch[1].trim();
+
+    return parsed;
+}
+
+// Route to parse uploaded resume and return extracted fields
+app.post('/api/parse-resume', resumeMemoryUpload.single('resumeFile'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: 'No resume file uploaded'
+            });
+        }
+
+        let rawText = '';
+        const mimeType = req.file.mimetype;
+        const fileName = req.file.originalname.toLowerCase();
+
+        if (mimeType === 'application/pdf' || fileName.endsWith('.pdf')) {
+            const pdfData = await pdfParse(req.file.buffer);
+            rawText = pdfData.text || '';
+        } else if (mimeType === 'text/plain' || fileName.endsWith('.txt')) {
+            rawText = req.file.buffer.toString('utf-8');
+        } else {
+            // Fallback for docx/other text streams
+            rawText = req.file.buffer.toString('utf-8');
+        }
+
+        if (!rawText.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: 'Could not extract readable text from the uploaded file.'
+            });
+        }
+
+        const parsedData = parseResumeTextContent(rawText);
+
+        res.json({
+            success: true,
+            message: 'Resume parsed successfully',
+            data: parsedData
+        });
+
+    } catch (error) {
+        console.error('Error parsing resume:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to parse resume: ' + error.message
         });
     }
 });

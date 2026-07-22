@@ -25,6 +25,23 @@
       <p class="switch-login">Already have an account? <a href="login.html" class="registration-link">Login</a></p>
     </div>
     <form class="resume-form">
+      <!-- Auto-fill from Resume Section -->
+      <div class="autofill-section" id="autofillDropzone">
+        <div class="autofill-header">
+          <i class="fas fa-magic" style="color: #667eea; font-size: 1.3rem;"></i>
+          <h3>Auto-fill with Existing Resume</h3>
+          <span class="autofill-badge">Fast & Easy</span>
+        </div>
+        <p class="autofill-desc">Upload your existing resume (PDF / TXT) to instantly auto-populate your form details!</p>
+        <div class="autofill-upload-box">
+          <input type="file" id="autofillFileInput" accept=".pdf,.txt" style="display: none;">
+          <button type="button" class="autofill-btn" id="triggerAutofillBtn">
+            <i class="fas fa-file-upload"></i> Upload & Auto-fill Form
+          </button>
+        </div>
+        <div class="autofill-status" id="autofillStatus"></div>
+      </div>
+
       <h2>Personal Details</h2>
       
       <!-- Profile Image Upload Section -->
@@ -940,6 +957,88 @@
                 submitButton.disabled = false;
             }
         });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const autofillInput = document.getElementById('autofillFileInput');
+      const triggerBtn = document.getElementById('triggerAutofillBtn');
+      const dropzone = document.getElementById('autofillDropzone');
+      const statusDiv = document.getElementById('autofillStatus');
+
+      if (triggerBtn && autofillInput) {
+        triggerBtn.addEventListener('click', () => autofillInput.click());
+
+        autofillInput.addEventListener('change', (e) => {
+          if (e.target.files.length > 0) {
+            handleResumeUpload(e.target.files[0]);
+          }
+        });
+
+        if (dropzone) {
+          ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+              e.preventDefault();
+              dropzone.classList.add('dragover');
+            });
+          });
+          ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+              e.preventDefault();
+              dropzone.classList.remove('dragover');
+            });
+          });
+          dropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            if (dt.files && dt.files.length > 0) {
+              handleResumeUpload(dt.files[0]);
+            }
+          });
+        }
+      }
+
+      async function handleResumeUpload(file) {
+        if (!file) return;
+        statusDiv.style.display = 'flex';
+        statusDiv.className = 'autofill-status loading';
+        statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Extracting details from resume...';
+
+        const formData = new FormData();
+        formData.append('resumeFile', file);
+
+        try {
+          const response = await fetch('/api/parse-resume', {
+            method: 'POST',
+            body: formData
+          });
+          const result = await response.json();
+
+          if (result.success && result.data) {
+            let filledCount = 0;
+            const data = result.data;
+            const form = document.querySelector('.resume-form');
+
+            Object.keys(data).forEach(fieldName => {
+              if (data[fieldName]) {
+                const input = form.querySelector(`[name="${fieldName}"]`);
+                if (input) {
+                  input.value = data[fieldName];
+                  input.classList.add('autofilled');
+                  filledCount++;
+                }
+              }
+            });
+
+            statusDiv.className = 'autofill-status success';
+            statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> Successfully auto-filled ${filledCount} fields from <strong>${file.name}</strong>!`;
+          } else {
+            throw new Error(result.message || 'Failed to parse resume');
+          }
+        } catch (err) {
+          statusDiv.className = 'autofill-status error';
+          statusDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${err.message}`;
+        }
+      }
     });
   </script>
 </body>
