@@ -7,6 +7,8 @@ const crypto = require('crypto');
 const PDFDocument = require('pdfkit');
 const multer = require('multer');
 const pdfParse = require('pdf-parse');
+const { spawn } = require('child_process');
+const util = require('util');
 
 const resumeMemoryUpload = multer({
     storage: multer.memoryStorage(),
@@ -37,13 +39,21 @@ if (isVercel && !fs.existsSync(EXCEL_FILE)) {
     }
 }
 
-// Ensure folders exist
-if (!fs.existsSync(RESUMES_FOLDER)) {
-    fs.mkdirSync(RESUMES_FOLDER, { recursive: true });
+// Ensure folders exist safely
+try {
+    if (!fs.existsSync(RESUMES_FOLDER)) {
+        fs.mkdirSync(RESUMES_FOLDER, { recursive: true });
+    }
+} catch (err) {
+    console.error('Error creating RESUMES_FOLDER:', err.message);
 }
 
-if (!fs.existsSync(PROFILE_IMAGES_FOLDER)) {
-    fs.mkdirSync(PROFILE_IMAGES_FOLDER, { recursive: true });
+try {
+    if (!fs.existsSync(PROFILE_IMAGES_FOLDER)) {
+        fs.mkdirSync(PROFILE_IMAGES_FOLDER, { recursive: true });
+    }
+} catch (err) {
+    console.error('Error creating PROFILE_IMAGES_FOLDER:', err.message);
 }
 
 // Configure multer for image uploads
@@ -2252,11 +2262,6 @@ app.post('/api/reset-password', async (req, res) => {
         });
     }
 });
-
-// Add these endpoints to your server.js file
-
-const { spawn } = require('child_process');
-const util = require('util');
 
 // Generate resume with template selection and Python integration
 app.post('/api/generate-resume/:userId', async (req, res) => {
