@@ -1585,21 +1585,48 @@ function parseResumeTextContent(rawText) {
         linkedinProfile: '',
         portfolioGithub: '',
         address: '',
-        technicalSkills: '',
-        softSkills: '',
         careerObjective: '',
-        bachelorDegree: '',
-        bachelorCollege: '',
-        bachelorYear: '',
-        bachelorCGPA: '',
-        masterDegree: '',
-        masterCollege: '',
-        masterYear: '',
-        masterCGPA: '',
+        
+        // Education
+        tenth_board: '',
+        tenth_year: '',
+        tenth_percentage: '',
+        tenth_school: '',
+        twelfth_board: '',
+        twelfth_year: '',
+        twelfth_percentage: '',
+        twelfth_school: '',
+        twelfth_stream: '',
+        bachelor_degree: '',
+        bachelor_college: '',
+        bachelor_year: '',
+        bachelor_cgpa: '',
+        master_degree: '',
+        master_college: '',
+        master_year: '',
+        master_cgpa: '',
+        additional_qualifications: '',
+
+        // Skills
+        technical_skills: '',
+        soft_skills: '',
+
+        // Experience & Details
         workExperience: '',
         projects: '',
         certifications: '',
-        achievements: ''
+        achievements: '',
+        languagesKnown: '',
+        hobbies: '',
+        references: ''
+    };
+
+    const setProp = (key, val) => {
+        parsed[key] = val;
+        if (key.includes('_')) {
+            const camelKey = key.replace(/_([a-z])/g, (m, p1) => p1.toUpperCase());
+            parsed[camelKey] = val;
+        }
     };
 
     // Email
@@ -1628,7 +1655,7 @@ function parseResumeTextContent(rawText) {
         parsed.portfolioGithub = url;
     }
 
-    // Name Heuristic (first prominent line not email/url/title)
+    // Name Heuristic
     for (const line of lines.slice(0, 8)) {
         if (!line.includes('@') && !line.match(/resume|curriculum|cv|contact|page|email|phone/i) && line.length > 2 && line.length < 40 && !/\d/.test(line)) {
             parsed.fullName = line.replace(/[^a-zA-Z\s.]/g, '').trim();
@@ -1657,7 +1684,7 @@ function parseResumeTextContent(rawText) {
         }
     });
     if (foundTechSkills.size > 0) {
-        parsed.technicalSkills = Array.from(foundTechSkills).map(s => `• ${s}`).join('\n');
+        setProp('technical_skills', Array.from(foundTechSkills).map(s => `• ${s}`).join('\n'));
     }
 
     // Soft Skills
@@ -1673,12 +1700,12 @@ function parseResumeTextContent(rawText) {
         }
     });
     if (foundSoftSkills.size > 0) {
-        parsed.softSkills = Array.from(foundSoftSkills).map(s => `• ${s}`).join('\n');
+        setProp('soft_skills', Array.from(foundSoftSkills).map(s => `• ${s}`).join('\n'));
     }
 
     // Section Extraction Helper
     const extractSection = (keywords) => {
-        const regex = new RegExp(`(?:^|\\n)\\s*(?:${keywords.join('|')})\\s*[:\\-]?\\s*\\n?([\\s\\S]*?)(?=\\n\\s*(?:education|experience|work experience|projects|skills|summary|objective|certifications|achievements|languages|references)|$)`, 'i');
+        const regex = new RegExp(`(?:^|\\n)\\s*(?:${keywords.join('|')})\\s*[:\\-]?\\s*\\n?([\\s\\S]*?)(?=\\n\\s*(?:education|academic|experience|work experience|projects|skills|summary|objective|certifications|achievements|languages|references|hobbies)|$)`, 'i');
         const match = text.match(regex);
         if (match && match[1]) {
             return match[1].trim().slice(0, 1000);
@@ -1691,19 +1718,41 @@ function parseResumeTextContent(rawText) {
     parsed.projects = extractSection(['projects', 'key projects', 'academic projects', 'personal projects']);
     parsed.certifications = extractSection(['certifications', 'licenses', 'courses', 'certifications & licenses']);
     parsed.achievements = extractSection(['achievements', 'awards', 'honors', 'accomplishments']);
+    parsed.languagesKnown = extractSection(['languages', 'languages known', 'languages spoken']);
+    parsed.hobbies = extractSection(['hobbies', 'interests', 'hobbies & interests', 'extracurricular']);
+    parsed.references = extractSection(['references', 'referees']);
+    setProp('additional_qualifications', extractSection(['additional qualifications', 'courses & workshops', 'additional education']));
 
     // Education Extraction
-    const bachelorMatch = text.match(/(B\.?\s*Tech|B\.?\s*E|B\.?\s*Sc|BCA|Bachelor[^\n,]*)/i);
-    if (bachelorMatch) parsed.bachelorDegree = bachelorMatch[0].trim();
+    const edSection = extractSection(['education', 'academic background', 'qualification', 'academic qualifications']);
+    const searchSource = edSection || text;
 
-    const masterMatch = text.match(/(M\.?\s*Tech|M\.?\s*E|M\.?\s*Sc|MCA|Master[^\n,]*)/i);
-    if (masterMatch) parsed.masterDegree = masterMatch[0].trim();
+    // Bachelor
+    const bachelorMatch = searchSource.match(/(B\.?\s*Tech[^\n,]*|B\.?\s*E[^\n,]*|B\.?\s*Sc[^\n,]*|BCA[^\n,]*|Bachelor[^\n,]*)/i);
+    if (bachelorMatch) setProp('bachelor_degree', bachelorMatch[0].trim());
 
-    const cgpaMatch = text.match(/(?:CGPA|GPA|Percentage|Marks)[:\s]*([\d.]+\s*(?:\/10|%)?)/i) || text.match(/\b([89]\.\d{1,2}|[789]\d%)\b/);
-    if (cgpaMatch) parsed.bachelorCGPA = cgpaMatch[1].trim();
+    // Master
+    const masterMatch = searchSource.match(/(M\.?\s*Tech[^\n,]*|M\.?\s*E[^\n,]*|M\.?\s*Sc[^\n,]*|MCA[^\n,]*|Master[^\n,]*|MBA[^\n,]*)/i);
+    if (masterMatch) setProp('master_degree', masterMatch[0].trim());
 
-    const yearMatch = text.match(/\b(20[0-2][0-9])\b/);
-    if (yearMatch) parsed.bachelorYear = yearMatch[1].trim();
+    // 10th & 12th
+    const tenthMatch = searchSource.match(/(10th|Secondary|SSC|Matriculation)[^\n,.]*/i);
+    if (tenthMatch) setProp('tenth_board', tenthMatch[0].trim());
+
+    const twelfthMatch = searchSource.match(/(12th|Higher Secondary|HSC|Intermediate|Senior Secondary)[^\n,.]*/i);
+    if (twelfthMatch) setProp('twelfth_board', twelfthMatch[0].trim());
+
+    // CGPA / Marks
+    const cgpaMatch = searchSource.match(/(?:CGPA|GPA|Percentage|Marks)[:\s]*([\d.]+\s*(?:\/10|%)?)/i) || searchSource.match(/\b([89]\.\d{1,2}|[789]\d%)\b/);
+    if (cgpaMatch) setProp('bachelor_cgpa', cgpaMatch[1].trim());
+
+    // Years
+    const years = Array.from(searchSource.matchAll(/\b(20[0-2][0-9])\b/g)).map(m => m[1]);
+    if (years.length > 0) {
+        setProp('bachelor_year', years[years.length - 1]);
+        if (years.length > 1) setProp('twelfth_year', years[years.length - 2]);
+        if (years.length > 2) setProp('tenth_year', years[years.length - 3]);
+    }
 
     return parsed;
 }

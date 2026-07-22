@@ -1020,7 +1020,15 @@
 
             Object.keys(data).forEach(fieldName => {
               if (data[fieldName]) {
-                const input = form.querySelector(`[name="${fieldName}"]`);
+                let input = form.querySelector(`[name="${fieldName}"]`);
+                if (!input) {
+                  const snakeName = fieldName.replace(/([A-Z])/g, "_$1").toLowerCase();
+                  input = form.querySelector(`[name="${snakeName}"]`);
+                }
+                if (!input) {
+                  const camelName = fieldName.replace(/_([a-z])/g, (m, p1) => p1.toUpperCase());
+                  input = form.querySelector(`[name="${camelName}"]`);
+                }
                 if (input) {
                   input.value = data[fieldName];
                   input.classList.add('autofilled');
