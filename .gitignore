@@ -33,12 +33,18 @@ desktop.ini
 *.swp
 *.swo
 
-# Excel temp files
+# Database & Excel files
+*.xlsx
+*.xls
 ~$*.xlsx
 ~$*.xls
+ELEVYA_Database.xlsx
 
-# Generated/uploaded resumes
+# Generated/uploaded data
+resumes/
+profile_images/
 mini_project/resumes/
+mini_project/profile_images/
 
 # Logs
 logs/
@@ -47,3 +53,4 @@ logs/
 # Build output
 dist/
 build/
+.vercel
