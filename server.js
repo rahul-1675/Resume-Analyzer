@@ -1636,6 +1636,10 @@ function parseResumeTextContent(rawText) {
         }
     }
 
+    function escapeRegExp(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
     // Tech Skills
     const techSkillList = [
         'Python', 'Java', 'JavaScript', 'TypeScript', 'C++', 'C#', 'PHP', 'Ruby', 'Go', 'Rust', 'Swift', 'Kotlin', 'R',
@@ -1646,7 +1650,8 @@ function parseResumeTextContent(rawText) {
     ];
     const foundTechSkills = new Set();
     techSkillList.forEach(skill => {
-        const regex = new RegExp(`\\b${skill.replace('.', '\\.')}\\b`, 'i');
+        const escaped = escapeRegExp(skill);
+        const regex = new RegExp(`(?:^|[^a-zA-Z0-9#+])${escaped}(?:$|[^a-zA-Z0-9#+])`, 'i');
         if (regex.test(text)) {
             foundTechSkills.add(skill);
         }
